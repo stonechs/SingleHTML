@@ -2,7 +2,7 @@
 
 Builds an offline, single-file HTML from an HTML source document. The builder minifies embedded `<style>` blocks with Lightning CSS for Chrome 120, Safari 17, and Firefox 121, removes executable inline script tags from the static markup, and converts the remaining HTML/CSS into a `document.write()` call. It joins the original inline JavaScript in document order with that printer code, applies name and property protection before compilation, then runs Closure Compiler `ADVANCED_OPTIMIZATIONS` exactly once for every input size. All required protection externs are supplied to that same pass, including when the source was already processed by Closure. The generated Roadroller, Base64, and LZMA loaders also run through Closure ADVANCED exactly once. Application scripts run after the markup is written and before `document.close()`, so their `DOMContentLoaded` handlers are registered before the document finishes loading. Roadroller, DEFLATE, and raw LZMA1 are emitted as separate variants. Roadroller uses O1 with 12 contexts below 300,000 input bytes; from 300,000 through 500,000 bytes it uses fixed parameters and 12 contexts; above 500,000 through 1,500,000 bytes it uses fixed parameters and 8 contexts. Above 1,500,000 bytes Roadroller outputs are skipped; the LZMA output is still generated for every input. Its six-bit output symbols are packed into consecutive bytes before Base122 encoding, following the approach in `dist/jsnes-lite.minV14.html`.
 
-The final Base122 loader is optimized in two Closure ADVANCED passes, using a payload placeholder that is filled afterward to avoid Unicode escape expansion. The Roadroller decoder consumes the decoded bytes directly. There is no intermediate character stream, source-code concatenation, or global loader API. Build output reports payload bytes and loader bytes separately. The supplied V14 reference file is left untouched.
+The final Base122 loader is optimized in one Closure ADVANCED pass. Its payload placeholder is filled afterward to avoid Unicode escape expansion. The Roadroller decoder consumes the decoded bytes directly. There is no intermediate character stream, source-code concatenation, or global loader API. Build output reports payload bytes and loader bytes separately. The supplied V14 reference file is left untouched.
 
 For a page with no static application markup whose app is hidden behind `eval(variable)`, optimized variants fall back to encoding the exact input when Closure expands the source. Such a decoder-generated page can depend on the browser's original `document.write()` parser position, which the normal combined loader changes. The build report identifies this as `applicationRuntimeFallback`; Base64, DEFLATE+Base64, and LZMA+Base122 variants then contain the original complete HTML, and `.original.*` outputs remain available as compressed exact-source versions.
 
@@ -97,6 +97,7 @@ The browser-based file-open check could not be completed in this environment: it
 ## Vendored Base122 code
 
 The Base122 encoder and browser decoder are adapted from [Kevin Albertson's Base122 project](https://github.com/kevinAlbs/Base122), licensed under MIT; see `vendor/base122-LICENSE.txt`. Build dependencies and exact versions are recorded in `package.json` and `pnpm-lock.yaml`.
+
 
 
 
