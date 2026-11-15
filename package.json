@@ -1,0 +1,31 @@
+{
+  "name": "html-singlefile-pack",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:exe": "node scripts/build-exe.mjs",
+    "build:original": "node scripts/build-original.mjs",
+    "verify": "node scripts/verify.mjs",
+    "verify:original": "node scripts/verify-original.mjs",
+    "verify:protection": "node scripts/verify-protection.mjs",
+    "build:regpack-demo": "node scripts/build.mjs examples/regpack-demo.html dist/regpack-demo.html",
+    "verify:regpack": "node scripts/verify-regpack.mjs"
+  },
+  "dependencies": {
+    "acorn": "8.15.0",
+    "google-closure-compiler": "20261109.0.0",
+    "parse5": "7.3.0",
+    "regpack": "5.0.1",
+    "roadroller": "2.1.0",
+    "terser": "5.51.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "lightningcss": "1.33.0",
+    "lzma1": "0.8.0"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules/
+.build-work/
+.exe-work/
+$smoke/
+dist/
+input/
+work/
+HtmlSingleFilePack.exe
