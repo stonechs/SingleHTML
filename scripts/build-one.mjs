@@ -38,6 +38,7 @@ const bootstrapPath = path.join(root, 'vendor/base122-browser-runtime.js');
 const lzmaDecoderPath = path.join(root, 'vendor/lzma-small-decoder.js');
 const externDir = path.join(root, 'externs');
 const inputBytes = await fs.readFile(inputPath);
+await fs.mkdir(workDir, { recursive: true });
 await fs.mkdir(path.dirname(sourceCopyPath), { recursive: true });
 if (path.resolve(sourceCopyPath) !== inputPath) await fs.copyFile(inputPath, sourceCopyPath);
 const obsoleteRegpackBase64Path = /\.html?$/i.test(outputPath) ? outputPath.replace(/\.html?$/i, '.regpack.base64.html') : outputPath + '.regpack.base64.html';
@@ -714,3 +715,4 @@ console.log(JSON.stringify({
   lzmaBase122RoundTrip: 'passed',
   originalHtmlBytesRoundTrip: 'passed',
 }, null, 2));
+
