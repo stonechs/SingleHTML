@@ -29,9 +29,16 @@ The first run extracts its embedded runtime to a short, versioned folder under `
 
 ## Batch-build files in `input`
 
+Install dependencies once in the project directory before building. `npm run build` only starts the builder; it does not install packages. Choose one package manager and use it for both commands:
+
 ```powershell
+# pnpm
 pnpm install
 pnpm run build
+
+# npm
+npm install
+npm run build
 ```
 
 Put standalone HTML files directly in `input/`. Each immediate child directory is treated as one website project: the build finds its entry HTML, inlines linked local JavaScript and stylesheets, embeds referenced local media, fonts and CSS resources (including files in deeper subdirectories), and embeds project image files for both static references and image URLs assigned dynamically through `Image.src`. Local links from one HTML page to another HTML page are converted to in-file navigation; the linked page's scripts, styles and static media are embedded as well. Literal local files passed to `new Audio("file.ext")` in external scripts are embedded. It then produces one set of runnable single-HTML variants under `dist/<directory-name>/`, with the main Roadroller output named `<directory-name>.html`. It also writes `<directory-name>.unoptimized.html`, the fully inlined project before Closure or compression. The entry is a root-level `index.html`/`index.htm` when present; otherwise the project must contain exactly one HTML file. Directories with several HTML files and no root index are reported as ambiguous. Top-level HTML files keep the existing behavior and each build independently. A failure for one input is reported and does not stop the remaining inputs from building. External network resources and external async scripts mixed with other scripts are rejected because their execution order cannot be preserved by combining them.
@@ -129,9 +136,16 @@ HtmlSingleFilePack.exe "C:\\games\\source" "C:\\games\\packed"
 
 ## 批量构建 `input` 中的文件
 
+首次构建前，请先在项目目录安装依赖。`npm run build` 只会启动构建脚本，不会自动安装依赖。选择一种包管理器，并用它执行两条命令：
+
 ```powershell
+# pnpm
 pnpm install
 pnpm run build
+
+# npm
+npm install
+npm run build
 ```
 
 独立 HTML 文件直接放在 `input/` 中。`input/` 下的每个一级子目录都会作为一个网站项目处理：构建器会查找入口 HTML，内嵌本地 JavaScript 和样式表，嵌入引用到的本地媒体、字体和 CSS 资源（包括更深层子目录中的文件），并嵌入项目图片，包括静态引用的图片以及通过 `Image.src` 动态设置 URL 的图片。HTML 页面之间的本地链接会转换为文件内导航；被链接页面的脚本、样式和静态媒体也会一并嵌入。外部脚本中以字面量传给 `new Audio("file.ext")` 的本地文件同样会嵌入。构建完成后，每个项目会在 `dist/<目录名>/` 下生成一组可运行的单 HTML 版本，主要 Roadroller 输出文件命名为 `<目录名>.html`。此外还会输出 `<目录名>.unoptimized.html`，即已内嵌资源、但未做 Closure 或压缩的项目版本。入口优先使用项目根目录下的 `index.html` 或 `index.htm`；否则项目必须只有一个 HTML 文件。若没有根目录 index 且存在多个 HTML 文件，构建器会报告入口不明确。`input/` 顶层的 HTML 文件仍按原有方式分别构建。某个输入失败会单独报告，不会中止其他输入的构建。如果外部网络资源无法内嵌，或外部 async 脚本与其他脚本混用而无法保持执行顺序，构建器会拒绝处理。
